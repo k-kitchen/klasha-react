@@ -1,0 +1,34 @@
+{
+  "name": "klasha-pay",
+  "version": "1.0.0",
+  "description": "<!-- @format -->",
+  "main": "index.tsx",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/klasha-apps/klasha-react.git"
+  },
+  "keywords": [
+    "klasha",
+    "payment",
+    "payment-gateway",
+    "klasha-pay"
+  ],
+  "author": "klasha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/klasha-apps/klasha-react/issues"
+  },
+  "homepage": "https://github.com/klasha-apps/klasha-react#readme",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.14"
+  }
+}
