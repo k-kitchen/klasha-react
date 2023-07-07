@@ -27,75 +27,76 @@ yarn add klasha-apps
 ### Usage
 
 ```javascript
-    import React, { Component } from 'react';
-    //import the library
-    import { useKlashaPayment, KlashaButton, KlashaConsumer, KlashaHookExample } from 'react-klasha';
+    import React from 'react';
+// import the library
+import { useKlashaPayment, KlashaButton, KlashaConsumer, KlashaHookExample } from 'react-klasha';
 
-    class App extends Component {
+const App = () => {
+  const [email, setEmail] = React.useState('klashapps@klasha.com');
+  const [phoneNumber, setPhoneNumber] = React.useState('+2347038521460');
+  const [merchantKey, setMerchantKey] = React.useState('GByi/gkhn5+BX4j6uI0lR7HCVo2NvTsVAQhyPko/uK4=');
+  const [amount, setAmount] = React.useState(1000);
+  const [txRef, setTxRef] = React.useState(String(Math.floor(Math.random() * 1000000000) + 1));
+  const [businessId] = React.useState('1');
+  const [fullname] = React.useState('Gabriel Godwin');
 
-    	state = {
-          email: 'klashapps@klasha.com',
-          phone_number: '+2347038521460',
-          merchantKey: 'GByi/gkhn5+BX4j6uI0lR7HCVo2NvTsVAQhyPko/uK4=',
-          amount: 1000,
-          sourceCurrency: '',
-          destinationCurrency: '',
-          tx_ref: '' + Math.floor((Math.random() * 1000000000) + 1),
-          businessId: '1',
-          fullname: 'Gabriel Godwin',
-          paymentDescription: '',
-          kit: {
-            currency: 'NG',
-            phone_number: '+2347038521460',
-            email: 'klashapps@klasha.com',
-            fullname: 'Gabriel Godwin',
-            tx_ref: '',
-            paymentType: '',
-          }
-        }
+  const callBack = (response) => {
+    console.log(response);
+  };
 
-    	callBack = (response) => {
-    		console.log(response);
-    	}
+  const kit = {
+    currency: 'NG',
+    phone_number: '+2347038521460',
+    email: 'klashapps@klasha.com',
+    fullname: 'Gabriel Godwin',
+    tx_ref: '',
+    paymentType: '',
+  };
 
+  const componentProps = {
+    className: 'btn',
+  };
 
-      render() {
-        return (
-        <div>
-          <KlashaHookExample className="btn" />
-        </div>
-        <div>
-            <p>
-              <KlashaButton
-                text="Make Payment"
-                className="payButton"
-                callBack={this.callBack}
-                disabled={true} {/*disable payment button*/}
-                embed={true} {/*payment embed in your app instead of a pop up*/}
-                fullname={this.state.fullname}
-                email={this.state.email}
-                phone_number={this.state.phone_number}
-                amount={this.state.amount}
-                merchantKey={this.state.merchantKey}
-                businessId={this.state.businessId}
-                tx_ref={this.state.tx_ref}
-                kit={this.state.kit}
-                tag="button"{/*it can be button or a or input tag */}
-              />
-            </p>
-        </div>
-        <div>
-        <KlashaConsumer {...componentProps} className="btn">
-          {({initializePayment}) => (
-            <button onClick={() => initializePayment()}>Klasha Consumer Implementation</button>
-          )}
-        </KlashaConsumer>
-      </div>
-        );
-      }
-    }
+  const initializePayment = () => {
+    // implementation for Klasha Consumer Initialization
+  };
 
-    export default App;
+  return (
+    <div>
+      <KlashaHookExample className="btn" />
+    </div>
+    <div>
+      <p>
+        <KlashaButton
+          text="Make Payment"
+          className="payButton"
+          callBack={callBack}
+          disabled={true} // disable payment button
+          embed={true} // payment embed in your app instead of a pop up
+          fullname={fullname}
+          email={email}
+          phone_number={phoneNumber}
+          amount={amount}
+          merchantKey={merchantKey}
+          businessId={businessId}
+          tx_ref={txRef}
+          kit={kit}
+          tag="button" // it can be button or a or input tag
+        />
+      </p>
+    </div>
+    <div>
+      <KlashaConsumer {...componentProps} className="btn">
+        {({ initializePayment }) => (
+          <button onClick={() => initializePayment()}>Klasha Consumer Implementation</button>
+        )}
+      </KlashaConsumer>
+    </div>
+  );
+};
+
+export default App;
+;
 ```
 
 For more information checkout [klasha's documentation](https://documenter.getpostman.com/view/8963555/TzJoFgHh)
