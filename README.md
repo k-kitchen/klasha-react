@@ -39,19 +39,14 @@ const App = () => {
     paymentType: '',
   };
 
-  const componentProps = {
-    className: 'btn',
-  };
+
 
   const initializePayment = useKlashaPayment({
-    isTestMode: process.env.REACT_APP_ENV === 'dev',
+    isTestMode: true,
     email: 'apps@klasha.com',
-    phone_number: ,
     merchantKey: 'the merchant public key in klahsa dashboard',
     businessId: 'business_unique_id',
     amount: '1000',
-    destinationCurrency: 'USD',
-    sourceCurrency: 'NGN',
     tx_ref: 'tax_ref',
     fullname: 'Klasha Apps',
     kit: {
