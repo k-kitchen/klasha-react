@@ -4,7 +4,7 @@ export const useKlashaPayment = (options) => {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
-    const loadKlashaScript = async () => {
+    const loadScript = async () => {
       try {
         await new Promise((resolve, reject) => {
           const script = document.createElement('script');
@@ -21,7 +21,7 @@ export const useKlashaPayment = (options) => {
       }
     };
 
-    loadKlashaScript();
+    loadScript();
   }, []); 
 
   const initializePayment = () => {
