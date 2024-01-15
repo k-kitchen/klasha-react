@@ -67,9 +67,7 @@ const App = () => {
       <p>
         <button
           type="button"
-          onClick={() => {
-            initializePayment();
-          }}
+          onClick={initializePayment}
         >
           pay
         </button>
