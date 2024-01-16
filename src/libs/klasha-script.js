@@ -1,63 +1,65 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from 'react';
 
-const cachedScripts = [];
-
-export default function useKlashaScript(
-  isTestMode = false,
-) {
-  let src1 = "https://js.klasha.com/pay.js";
-
-  const [state, setState] = useState({
-    loaded: false,
-    error: false,
-  });
+export const useKlashaPayment = (options) => {
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
-    if (cachedScripts.includes(src1)) {
-      setState({
-        loaded: true,
-        error: false,
-      });
-    } else {
-      const divScript =
-        window.document.createElement("div");
-      divScript.id = "ktest";
-      window.document.body.appendChild(divScript);
-
-      const script1 = document.createElement("script");
-      script1.src = src1;
-      script1.async = true;
-
-      const onScriptLoad = () => {
-        setState({
-          loaded: true,
-          error: false,
+    const loadScript = async () => {
+      try {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://js.klasha.com/pay.js';
+          script.async = true;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
         });
-      };
+        setIsScriptLoaded(true);
+      } catch (error) {
+        console.error('Error loading Klasha script:', error);
+        setIsScriptLoaded(false);
+      }
+    };
 
-      const onScriptError = () => {
-        const index1 = cachedScripts.indexOf(src1);
-        if (index1 >= 0) cachedScripts.splice(index1, 1);
-        script1.remove();
+    loadScript();
+  }, []); 
 
-        setState({
-          loaded: true,
-          error: true,
-        });
-      };
-
-      script1.addEventListener("load", onScriptLoad);
-      script1.addEventListener("complete", onScriptLoad);
-      script1.addEventListener("error", onScriptError);
-
-      document.body.appendChild(script1);
-
-      return () => {
-        script1.removeEventListener("load", onScriptLoad);
-        script1.removeEventListener("error", onScriptError);
-      };
+  const initializePayment = () => {
+    if (!isScriptLoaded) {
+      console.error('Klasha script is not loaded.');
+      return;
     }
-  }, [src1]);
 
-  return [state.loaded, state.error];
-}
+    try {
+      const kit = {
+        phone_number: options.phone_number,
+        email: options.email,
+        fullname: options.fullname,
+        tx_ref: options.tx_ref,
+        callback: options.callback,
+        isTestMode: options.isTestMode
+      };
+      
+      const currencyToUse = options.currency;
+
+      const client = new window.KlashaClient(
+        options.merchantKey || '',
+        options.amount,
+        options.amount,
+        options.ktest,
+        options.callback,
+        currencyToUse,
+        currencyToUse,
+        kit,
+        options.isTestMode
+      );
+      client.init();
+    } catch (err) {
+      console.error('Error initializing KlashaClient:', err);
+    }
+  };
+
+  return initializePayment;
+};
+
+export default useKlashaPayment;
