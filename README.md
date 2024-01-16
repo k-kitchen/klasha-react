@@ -15,14 +15,14 @@ This React library provides a wrapper to add Klasha Payments to your React appli
 ### Install
 
 ```sh
-npm install klash-pay-react --save
+npm install klash-pay --save
 ```
 
 ### Usage
 
 ```javascript
 import React from 'react';
-import { useKlashaPayment } from 'klasha-pay-react';
+import {useKlashaPayment } from 'klasha-pay';
 
 const App = () => {
  
@@ -34,7 +34,7 @@ const App = () => {
     currency: 'NG',
     phone_number: '+2347038521460',
     email: 'klashapps@klasha.com',
-    fullname: 'Gabriel Godwin',
+    fullname: 'Klasha Apps',
     tx_ref: '',
     paymentType: '',
   };
@@ -67,9 +67,7 @@ const App = () => {
       <p>
         <button
           type="button"
-          onClick={() => {
-            initializePayment();
-          }}
+          onClick={initializePayment}
         >
           pay
         </button>
