@@ -1,12 +1,14 @@
 {
     "name": "klasha-pay",
-    "version": "1.1.4",
-    "main": "./libs/klasha-script.js",
+    "version": "1.2.6",
+    "main": "./src/libs/klasha-script.js",
     "private": false,
     "dependencies": {
         "@testing-library/jest-dom": "^5.17.0",
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
+        "klasha-pay": "^1.2.6",
+        "klasha-pay-test": "^1.2.4",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-scripts": "5.0.1",

@@ -37,6 +37,7 @@ export const useKlashaPayment = (options) => {
         fullname: options.fullname,
         tx_ref: options.tx_ref,
         callback: options.callback,
+        isTestMode: options.isTestMode
       };
       
       const currencyToUse = options.currency;
@@ -50,7 +51,7 @@ export const useKlashaPayment = (options) => {
         currencyToUse,
         currencyToUse,
         kit,
-        true
+        options.isTestMode
       );
       client.init();
     } catch (err) {

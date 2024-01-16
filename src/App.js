@@ -1,5 +1,5 @@
-import './App.css';
-import { useKlashaPayment } from './libs/klasha-script';
+import { useKlashaPayment } from 'klasha-pay';
+
 
 function App() {
   const callWhenDone = () => {
@@ -8,6 +8,7 @@ function App() {
 
   const initializePayment = useKlashaPayment({
     phone_number: '+23400000000000',
+    isTestMode: true,
     email: 'apps@klasha.com',
     merchantKey: 'W2mbGtdx5vKCepFaUm2CqdzebaVW9z22shubB4xFbKTR3g4sL72+7qNQYHTUEfs0my1e/hAO1Nkdx9YbXTjUOg==',
     amount: 1000,

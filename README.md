@@ -22,7 +22,7 @@ npm install klash-pay --save
 
 ```javascript
 import React from 'react';
-import useKlashaPayment  from 'klasha-pay';
+import {useKlashaPayment } from 'klasha-pay';
 
 const App = () => {
  
@@ -34,7 +34,7 @@ const App = () => {
     currency: 'NG',
     phone_number: '+2347038521460',
     email: 'klashapps@klasha.com',
-    fullname: 'Gabriel Godwin',
+    fullname: 'Klasha Apps',
     tx_ref: '',
     paymentType: '',
   };
