@@ -1,6 +1,6 @@
 {
     "name": "klasha-pay",
-    "version": "1.2.6",
+    "version": "2.2.6",
     "main": "./src/libs/klasha-script.js",
     "private": false,
     "dependencies": {

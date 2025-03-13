@@ -1,60 +1,86 @@
-import { useEffect } from "react";
-import useKlashaScript from "./klasha-script";
-import { callKlashaClient } from "./klasha-action";
+import { useState, useEffect } from 'react';
 
-export default function useKlashaPayment(options) {
-  const [scriptLoaded, scriptError] = useKlashaScript(options.isTestMode);
-  const {
-    isTestMode,
-    merchantKey,
-    amount,
-    tx_ref,
-    fullname,
-    email,
-    phone_number,
-    callbackUrl,
-    metadata,
-    kit,
-  } = options;
-
-  function clean(obj) {
-    for (const propName in obj) {
-      if (obj[propName] === null || obj[propName] === undefined) {
-        delete obj[propName];
-      }
-    }
-    return obj;
-  }
-
-  function initializePayment(callBack) {
-    if (scriptError) {
-      throw new Error("Unable to load klasha inline script");
-    }
-
-    if (scriptLoaded) {
-      const klashaArgs = {
-        callBack: callBack ? callBack : () => null,
-        isTestMode,
-        merchantKey,
-        amount,
-        tx_ref,
-        fullname: fullname || "",
-        email: email || "",
-        phone_number: phone_number || "",
-        callbackUrl: callbackUrl || "",
-        metadata: metadata || {},
-        kit: kit || null,
-        "data-custom-button": options["data-custom-button"] || "",
-      };
-      callKlashaClient(clean(klashaArgs));
-    }
-  }
+const useKlashaPayment = ({
+  merchantKey,
+  businessId,
+  amount,
+  description = '',
+  currency = 'NGN',
+  destinationCurrency,
+  environment = true,
+  transactionRef,
+  customer = {},
+  onSuccess,
+  onError,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [paymentData, setPaymentData] = useState(null);
 
   useEffect(() => {
-    if (scriptError) {
-      throw new Error("Unable to load klasha inline script");
-    }
-  }, [scriptError]);
+    const script = document.createElement('script');
+    script.src = 'https://js.klasha.com/pay.js';
+    script.async = true;
+    document.body.appendChild(script);
 
-  return initializePayment;
-}
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const payWithKlasha = () => {
+    if (
+      !merchantKey ||
+      !businessId ||
+      !amount ||
+      !transactionRef ||
+      !currency ||
+      !destinationCurrency
+    ) {
+      setError('Missing required payment parameters.');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const paymentKit = {
+      tx_ref: transactionRef,
+      fullname: customer.fullname || '',
+      firstName: customer.firstName || '',
+      lastName: customer.lastName || '',
+      email: customer.email || '',
+      phone_number: customer.phoneNumber || '',
+      businessId,
+      merchantKey,
+      amount,
+      sourceAmount: amount.toString(),
+    };
+
+    try {
+      const client = new window.KlashaClient(
+        merchantKey,
+        businessId,
+        amount,
+        description,
+        (data) => {
+          setPaymentData(data);
+          setLoading(false);
+          if (onSuccess) onSuccess(data);
+        },
+        currency,
+        destinationCurrency,
+        paymentKit,
+        environment,
+      );
+    } catch (err) {
+      setError('Payment initialization failed.');
+      setLoading(false);
+      if (onError) onError(err);
+    }
+  };
+
+  return { payWithKlasha, loading, error, paymentData };
+};
+
+export default useKlashaPayment;

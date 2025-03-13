@@ -15,75 +15,52 @@ This React library provides a wrapper to add Klasha Payments to your React appli
 ### Install
 
 ```sh
-npm install klash-pay --save
+npm install klasha-pay --save
 ```
 
 ### Usage
 
 ```javascript
 import React from 'react';
-import {useKlashaPayment } from 'klasha-pay';
+import { useKlashaPayment } from 'klasha-pay';
 
 const App = () => {
- 
-  const callBack = (response) => {
-    console.log(response);
-  };
 
-  const kit = {
-    currency: 'NG',
-    phone_number: '+2347038521460',
-    email: 'klashapps@klasha.com',
-    fullname: 'Klasha Apps',
-    tx_ref: '',
-    paymentType: '',
-  };
-
-
-
-  const initializePayment = useKlashaPayment({
-    isTestMode: true,
-    email: 'apps@klasha.com',
-    merchantKey: 'the merchant public key in klahsa dashboard',
-    businessId: 'business_unique_id',
+  const { payWithKlasha, loading, error, paymentData } = useKlashaPayment({
+    merchantKey: 'your-merchant-key',
+    businessId: 133,
     amount: 1000,
-    tx_ref: 'tax_ref',
-    fullname: 'Klasha Apps',
-    kit: {
-      currency: 'NGN',
-      tx_ref: 'tax_red',
-      paymentType: 'bulkpayment',
-      fullname: 'Klasha Apps',
-      email: 'apps@klasha.com',
-      phone_number: '+234example-phone.',
-      callBack: callWhenDone,
+    description: 'Product Purchase',
+    currency: 'NGN',
+    destinationCurrency: 'USD',
+    transactionRef: 'unique-transaction-ref-12345',
+    customer: {
+      fullname: 'John Doe',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phoneNumber: '1234567890',
     },
-    paymentDescription: 'Add funds to wallet',
+    /*enviroment: true would call Klasha dev while enviroment: false will call production */
+    environment: true,
+    onSuccess: (data) => console.log('Payment successful!', data),
+    onError: (err) => console.error('Payment failed', err),
   });
 
 
-  return (
-    <div>
-      <p>
-        <button
-          type="button"
-          onClick={initializePayment}
-        >
-          pay
-        </button>
-      </p>
-    </div>
-  );
+  return (<div>
+      <button onClick={payWithKlasha} disabled={loading}>
+        {loading ? 'Processing...' : 'Pay with Klasha'}
+      </button>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {paymentData && <p>Payment successful: {JSON.stringify(paymentData)}</p>}
+    </div>);
 };
 
 export default App;
 ;
 ```
 
-
-## Deployment
-
-REMEMBER TO CHANGE THE TEST MODE  WHEN DEPLOYING ON A LIVE/PRODUCTION SYSTEM
 
 ## Contributing
 
